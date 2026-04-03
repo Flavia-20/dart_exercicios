@@ -11,7 +11,7 @@ void main() {
     print('Digite sua um numero entre 1 e $limite: ');
     String? linha = stdin.readLineSync();
 
-    if (linha == null) {
+    if (linha == null || linha == "") {
       print('Entrada inválida. Tente novamente.');
       continue;
     }
