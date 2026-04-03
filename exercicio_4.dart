@@ -1,97 +1,161 @@
-void main() {
-  
-  List<Map<String, dynamic>> alunos = [
-    {
-      'matricula': '12345',
-      'nome': 'Andre',
-      'sexo': 'M',
-      'faltas': 2,
-      'notas': [8.0, 7.5, 9.0]
-    },
-    {
-      'matricula': '54321',
-      'nome': 'Maria',
-      'sexo': 'F',
-      'faltas': 0,
-      'notas': [9.0, 8.5, 9.5]
-    },
-    {
-      'matricula': '67890',
-      'nome': 'Joao',
-      'sexo': 'M',
-      'faltas': 5,
-      'notas': [6.0, 5.5, 7.0]
-    },
-    {
-      'matricula': '56896',
-      'nome': 'MAteus',
-      'sexo': 'M',
-      'faltas': 18,
-      'notas': [8.0, 4.5, 7.0]
-    },
-    {
-      'matricula': '78965',
-      'nome': 'Ana',
-      'sexo': 'F',
-      'faltas': 20,
-      'notas': [7.0, 6.5, 8.0]
-    },
-  ];
 
-  int total_alunos = alunos.length;
-  int aprovados = 0;
-  int reprovados = 0;
+import 'dart:io';
 
-  double soma_medias_turma = 0.0;
+main() {
 
-  double soma_media_feminino = 0.0;
-  int qtd_feminino = 0;
+double media_aluno = 0.0;
+double soma_medias_turma = 0.0;
 
-  double maior_media_M = 0.0;
-  String? matriculaM;
+int aprovados = 0;
+int aluno_contagem = 0;
 
-  double maior_media_f = 0.0;
-  String? matriculaF;
+double maior_media_M = 0.0;
+String? matriculaM = '00000';
 
-  for (var aluno in alunos) {
-    List notas = aluno['notas'];
-    double media = (notas[0] + notas[1] + notas[2]) / 3;
-    print(media);
+double maior_media_f = 0.0;
+String? matriculaF = '00000';
 
-    soma_medias_turma += media;
+double soma_media_feminino = 0.0;
+int qtd_feminino = 0;
 
-    if (media >= 7.0 && aluno['faltas'] <= 18) {
-      aprovados++;
 
-      if (aluno['sexo'] == 'M' && media > maior_media_M) {
-        maior_media_M = media;
-        matriculaM = aluno['matricula'];
-      }
+String? funcaoMatricula(String? matricula) {
 
-      if (aluno['sexo'] == 'F' && media > maior_media_f) {
-        maior_media_f = media;
-        matriculaF = aluno['matricula'];
-      }
+  if (matricula == null || matricula == "" || RegExp(r'[a-zA-Z]').hasMatch(matricula) || matricula.length != 5) {
+    print("Matrícula inválida. Por favor, digite um número de matrícula válido ou '00000' para sair.");
+    String? novaMatricula = stdin.readLineSync();
+    if (novaMatricula == "00000") {
+      print('Programa encerrado.');
+      return exit(0);
     }
-      else {
-        reprovados++;
-      }
+    return funcaoMatricula(novaMatricula);
+  }
+  return matricula;
+}
 
-    if (aluno['sexo'] == 'F') {
-      soma_media_feminino += media;
+String? funcaoNome(String? nome) {
+      if(nome == null || nome == "" || RegExp(r'[0-9]').hasMatch(nome) ) {
+      print("Nome inválido. Por favor, digite um nome válido.");
+      String? nome = stdin.readLineSync();
+      return funcaoNome(nome);
+    }
+    return nome;
+}
+
+String? funcaoSexo(String? sexo) {
+    if(sexo == null || (sexo.toUpperCase() != 'M' && sexo.toUpperCase() != 'F' || sexo == "")) {
+      print("Sexo inválido. Por favor, digite 'M' para masculino ou 'F' para feminino.");
+      String? sexo = stdin.readLineSync();
+      return funcaoSexo(sexo);
+    }
+    return sexo.toUpperCase();
+}
+
+String? funcaoNota1(String? nota1Input) {
+    if (nota1Input == null || double.tryParse(nota1Input) == null || double.parse(nota1Input) < 0 || double.parse(nota1Input) > 10 || nota1Input == "") {
+      print("Nota inválida. Por favor, digite um número entre 0 e 10.");
+      String? nota1Input = stdin.readLineSync();
+      return funcaoNota1(nota1Input);
+    }
+    return nota1Input;
+}
+
+String? funcaoNota2(String? nota2Input) {
+    if (nota2Input == null || double.tryParse(nota2Input) == null || double.parse(nota2Input) < 0 || double.parse(nota2Input) > 10 || nota2Input == "") {
+      print("Nota inválida. Por favor, digite um número entre 0 e 10.");
+      String? nota2Input = stdin.readLineSync();
+      return funcaoNota2(nota2Input);
+    }
+    return nota2Input;
+}
+
+String? funcaoNota3(String? nota3Input) {
+    if (nota3Input == null || double.tryParse(nota3Input) == null || double.parse(nota3Input) < 0 || double.parse(nota3Input) > 10 || nota3Input == "") {
+      print("Nota inválida. Por favor, digite um número entre 0 e 10.");
+      String? nota3Input = stdin.readLineSync();
+      return funcaoNota3(nota3Input);
+    }
+    return nota3Input;
+}
+
+String? funcaoNumeroFaltas(String? faltasInput) {
+    if (faltasInput == null || int.tryParse(faltasInput) == null || int.parse(faltasInput) < 0 || int.parse(faltasInput) > 20 || faltasInput == "") {
+      print("Número de faltas inválido. Por favor, digite um número entre 0 e 20.");
+      String? faltasInput = stdin.readLineSync();
+      return funcaoNumeroFaltas(faltasInput);
+    }
+    return faltasInput;
+}
+
+  while (true) {
+    print('-----------------------------------------------------------------------');
+    print('Digite a matricula do aluno com no máximo 5 digitos: (para sair digite 00000)');
+    String? matricula = stdin.readLineSync();
+    if (matricula == "00000") {
+      print('Programa encerrado.');
+      break;
+    }
+    String?  retornoMatricula = funcaoMatricula(matricula);
+
+    print("Digite o nome do aluno: ");
+    String? nome = stdin.readLineSync();
+    String? retornoNome = funcaoNome(nome);
+
+    print("Digite o sexo do candidato (M/F): ");
+    String? sexo = stdin.readLineSync();
+    String? retornoSexo = funcaoSexo(sexo);
+
+    print('digite a primeira nota do aluno: ');
+    String? nota1Input = stdin.readLineSync();
+    String? retornoNota1 = funcaoNota1(nota1Input);
+
+    print('digite a segunda nota do aluno: ');
+    String? nota2Input = stdin.readLineSync();
+    String? retornoNota2 = funcaoNota2(nota2Input);
+
+    print('digite a terceira nota do aluno: ');
+    String? nota3Input = stdin.readLineSync(); 
+    String? retornoNota3 = funcaoNota3(nota3Input); 
+
+    media_aluno = (double.parse(retornoNota1!) + double.parse(retornoNota2!) + double.parse(retornoNota3!)) / 3;
+    soma_medias_turma += media_aluno; 
+
+    if (retornoSexo == 'F') {
+      soma_media_feminino += media_aluno;
       qtd_feminino++;
     }
+
+    print('DIgite o número de faltas do aluno: ');
+    String? faltasInput = stdin.readLineSync();
+    String? retornoFaltas = funcaoNumeroFaltas(faltasInput); 
+
+    if (media_aluno >= 7.0 && int.parse(retornoFaltas!) <= 18) {
+      print("Aluno aprovado!");
+      aprovados++;
+
+      if (retornoSexo == 'M' && media_aluno > maior_media_M) {
+        maior_media_M = media_aluno;
+        matriculaM = retornoMatricula;
+      }
+
+      if (retornoSexo == 'F' && media_aluno > maior_media_f) {
+        maior_media_f = media_aluno;
+        matriculaF = retornoMatricula;
+      }
+    }else {
+      print("Aluno reprovado!");
+    }
+
+    aluno_contagem++;
   }
 
-  double mediaTurma = soma_medias_turma / total_alunos;
-  double percentual_aprovados = (aprovados / total_alunos) * 100;
-    double percentual_reprovados = (reprovados / total_alunos) * 100;
+  double mediaTurma = soma_medias_turma / aluno_contagem;
+  double percentual_aprovados = (aprovados / aluno_contagem) * 100;
   double media_feminino = qtd_feminino > 0 ? soma_media_feminino / qtd_feminino : 0;
 
   print('Média da turma: $mediaTurma');
   print('Percentual de aprovados: $percentual_aprovados%');
-  print('Percentual de reprovados: $percentual_reprovados%');
-  print('Melhor masculino aprovado: $matriculaM');
-  print('Melhor feminina aprovada: $matriculaF');
+  print('A matricula do melhor aluno do sexo masculino aprovado: $matriculaM');
+  print('A matricula do melhor aluno do sexo feminino aprovado: $matriculaF');
   print('Média dos alunos do sexo feminino: $media_feminino');
 }
