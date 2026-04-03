@@ -18,8 +18,15 @@ String? matriculaF = '00000';
 double soma_media_feminino = 0.0;
 int qtd_feminino = 0;
 
+ Set<String> matriculas = {};
 
-String? funcaoMatricula(String? matricula) {
+String? funcaoMatricula(String? matricula, Set<String> matriculas) {
+
+    if (matriculas.contains(matricula)) {
+      print("Matrícula já existe! Digite outra.");
+      String? novaMatricula = stdin.readLineSync();
+      return funcaoMatricula(novaMatricula, matriculas);
+    }
 
   if (matricula == null || matricula == "" || RegExp(r'[a-zA-Z]').hasMatch(matricula) || matricula.length != 5) {
     print("Matrícula inválida. Por favor, digite um número de matrícula válido ou '00000' para sair.");
@@ -28,8 +35,9 @@ String? funcaoMatricula(String? matricula) {
       print('Programa encerrado.');
       return exit(0);
     }
-    return funcaoMatricula(novaMatricula);
+    return funcaoMatricula(novaMatricula, matriculas);
   }
+  matriculas.add(matricula);
   return matricula;
 }
 
@@ -52,7 +60,7 @@ String? funcaoSexo(String? sexo) {
 }
 
 String? funcaoNota1(String? nota1Input) {
-    if (nota1Input == null || double.tryParse(nota1Input) == null || double.parse(nota1Input) < 0 || double.parse(nota1Input) > 10 || nota1Input == "") {
+    if (nota1Input == null || double.tryParse(nota1Input) == null || double.parse(nota1Input) < 0 || double.parse(nota1Input) > 10 || nota1Input == "" || RegExp(r'[a-zA-Z]').hasMatch(nota1Input)) {
       print("Nota inválida. Por favor, digite um número entre 0 e 10.");
       String? nota1Input = stdin.readLineSync();
       return funcaoNota1(nota1Input);
@@ -61,7 +69,7 @@ String? funcaoNota1(String? nota1Input) {
 }
 
 String? funcaoNota2(String? nota2Input) {
-    if (nota2Input == null || double.tryParse(nota2Input) == null || double.parse(nota2Input) < 0 || double.parse(nota2Input) > 10 || nota2Input == "") {
+    if (nota2Input == null || double.tryParse(nota2Input) == null || double.parse(nota2Input) < 0 || double.parse(nota2Input) > 10 || nota2Input == "" || RegExp(r'[a-zA-Z]').hasMatch(nota2Input)) {
       print("Nota inválida. Por favor, digite um número entre 0 e 10.");
       String? nota2Input = stdin.readLineSync();
       return funcaoNota2(nota2Input);
@@ -70,7 +78,7 @@ String? funcaoNota2(String? nota2Input) {
 }
 
 String? funcaoNota3(String? nota3Input) {
-    if (nota3Input == null || double.tryParse(nota3Input) == null || double.parse(nota3Input) < 0 || double.parse(nota3Input) > 10 || nota3Input == "") {
+    if (nota3Input == null || double.tryParse(nota3Input) == null || double.parse(nota3Input) < 0 || double.parse(nota3Input) > 10 || nota3Input == "" || RegExp(r'[a-zA-Z]').hasMatch(nota3Input)) {
       print("Nota inválida. Por favor, digite um número entre 0 e 10.");
       String? nota3Input = stdin.readLineSync();
       return funcaoNota3(nota3Input);
@@ -79,7 +87,7 @@ String? funcaoNota3(String? nota3Input) {
 }
 
 String? funcaoNumeroFaltas(String? faltasInput) {
-    if (faltasInput == null || int.tryParse(faltasInput) == null || int.parse(faltasInput) < 0 || int.parse(faltasInput) > 20 || faltasInput == "") {
+    if (faltasInput == null || int.tryParse(faltasInput) == null || int.parse(faltasInput) < 0 || int.parse(faltasInput) > 20 || faltasInput == "" || RegExp(r'[a-zA-Z]').hasMatch(faltasInput)) {
       print("Número de faltas inválido. Por favor, digite um número entre 0 e 20.");
       String? faltasInput = stdin.readLineSync();
       return funcaoNumeroFaltas(faltasInput);
@@ -95,7 +103,7 @@ String? funcaoNumeroFaltas(String? faltasInput) {
       print('Programa encerrado.');
       break;
     }
-    String?  retornoMatricula = funcaoMatricula(matricula);
+    String?  retornoMatricula = funcaoMatricula(matricula, matriculas);
 
     print("Digite o nome do aluno: ");
     String? nome = stdin.readLineSync();
